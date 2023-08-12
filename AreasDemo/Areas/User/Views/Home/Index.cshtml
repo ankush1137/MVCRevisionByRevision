@@ -1,0 +1,47 @@
+﻿@using System.Text.Json
+@using AreasDemo.Models
+
+
+<h1>User DashBoard</h1>
+
+
+<h2> TempData Value : @ViewBag.key</h2>
+
+@*<p>UserName : @ViewBag.user.UserName  Password : @ViewBag.user.Password</p>*@
+
+@{
+   //ViewBag.user= JsonSerializer.Deserialize<LoginModel>(TempData.Peek("details").ToString());
+}
+
+@*<p>UserName : @ViewBag.user.UserName  Password : @ViewBag.user.Password</p>*@
+
+<a asp-action="Index" asp-controller="Home" asp-area="Admin">Go to Admin</a>
+
+@{
+    var users = JsonSerializer.Deserialize<LoginModel>(Context.Request.Cookies["cookiesUser"]);
+}
+<h3>Directly Cookies value: @users.UserName  @users.Password</h3>
+
+
+@*<p>
+    Cookie value: @{
+        var serializedUser = Request.Cookies["cookiesUser"];
+        if (!string.IsNullOrEmpty(serializedUser))
+        {
+            var user = JsonSerializer.Deserialize<LoginModel>(serializedUser);
+            @user.UserName
+            // Access the properties of the deserialized object
+        }
+    }
+</p>*@
+
+<h1>User session Name: @Context.Session.GetString("sessionName")</h1>
+
+
+<h1>Cookies value : @Context.Request.Cookies["CookieName"]</h1>
+
+@{
+    dynamic model2 = JsonSerializer.Deserialize<LoginModel>(Context.Session.GetString("sessionkey"));
+}
+
+<h2>Complex data of session : @model2.UserName @model2.Password </h2>

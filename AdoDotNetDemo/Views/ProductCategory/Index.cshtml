@@ -1,0 +1,39 @@
+﻿@model AdoDotNetDemo.Models.ProductCategory
+
+<table class="table table-striped border">
+    <thead class="bg-black text-white">
+        <tr>
+            <th>Product Id</th>
+            <th>Product Name</th>
+            <th>Unit Price</th>
+        </tr>
+    </thead>
+    <tbody class="bg-info">
+        @foreach(Product proc in Model.product){
+            <tr>
+                <td>@proc.Id</td>
+                <td>@proc.ProductName</td>
+                <td>@proc.UnitPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<table class="table table-striped border">
+    <thead class="bg-black text-white">
+        <tr>
+            <th>Category Id</th>
+            <th>Product Name</th>
+        </tr>
+    </thead>
+    <tbody class="bg-info">
+        @foreach(Category cat in Model.categories){
+            <tr>
+                <td>@cat.Id</td>
+                <td>@cat.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

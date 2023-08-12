@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ViewDemo.Models.Employee>
+<table class="table table-striped border">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model)
+        {
+            <tr>
+                <td>@emp.Id</td>
+                <td>@emp.Name</td>
+                <td>@emp.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>

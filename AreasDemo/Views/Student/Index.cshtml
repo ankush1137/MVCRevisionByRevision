@@ -1,0 +1,50 @@
+﻿<h1>Student List</h1>
+
+<table class="table table-striped border">
+    <thead class="bg-black text-white">
+        <tr>
+            <th>RollNumber</th>
+            <th>Name</th>
+            <th>Gender</th>
+        </tr>
+    </thead>
+    <tbody class="bg-info">
+        <tr><h3>Using ViewBag</h3></tr>
+        @foreach (Student item in ViewBag.student)
+        {
+            <tr>
+                <td>@item.RollNumber</td>
+                <td>@item.Name</td>
+                <td>@item.Gender</td>
+            </tr>
+        }
+       
+    </tbody>
+</table>
+
+
+
+<table class="table table-striped border">
+    <thead class="bg-black text-white">
+        <tr>
+            <th>RollNumber</th>
+            <th>Name</th>
+            <th>Gender</th>
+        </tr>
+    </thead>
+    <tbody class="bg-info">
+       
+        
+            <h3>Using ViewData</h3>
+        
+        @foreach (Student items in (IEnumerable<Student>)ViewData["AllStudent"])
+        {
+            <tr>
+                <td>@items.RollNumber</td>
+                <td>@items.Name</td>
+                <td>@items.Gender</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

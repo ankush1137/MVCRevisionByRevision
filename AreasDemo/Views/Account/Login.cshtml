@@ -1,0 +1,28 @@
+﻿@model AreasDemo.Models.LoginModel
+
+<h2>@ViewBag.site</h2>
+<h3>@ViewData["success"]</h3>
+
+@*<h2>TempData Value : @TempData["key"]</h2>*@
+
+
+<h2>TempData Value : @TempData.Peek("key")</h2>
+
+<form method="post" asp-action="Login">
+    <div>
+        <input type="hidden" name="id" value="10"/>
+    </div>
+    <div>
+        <label asp-for="UserName" class="form-label">User Name</label>
+        <input asp-for="UserName" class="form-control"/>
+    </div>
+    <div>
+        <label asp-for="Password" class="form-label">Password</label>
+        <input asp-for="Password" type="text" class="form-control" />
+    </div>
+    <div class="mt-2">
+        <input type="submit" value="Log In" class="btn btn-primary"/>
+    </div>
+</form>
+
+<a asp-action="Index" asp-controller="home" asp-route-id="12" asp-route-name="Onkar" asp-route-age="28">Back to home</a>

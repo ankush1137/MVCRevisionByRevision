@@ -1,0 +1,28 @@
+﻿@*@{
+    Layout = "_Layout";
+    //Layout = "_MyLayOut";
+}*@
+
+
+@{
+    // Get the User-Agent string from the Request
+    var userAgent = Context.Request.Headers["User-Agent"].ToString();
+
+    // Check if the User-Agent contains "Chrome"
+    var isChrome = userAgent.Contains("Chrome");
+
+    // Set the layout based on the browser
+    if (!isChrome)
+    {
+        Layout = "~/Views/Shared/_MyLayOut.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}
+
+
+
+
+

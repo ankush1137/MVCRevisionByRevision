@@ -1,0 +1,19 @@
+﻿@using System.Text.Json
+@using AreasDemo.Models
+
+<h2>Admin Dashboard</h2>
+
+
+<h2> TempData Value : @ViewBag.key</h2>
+
+@{
+    ViewBag.user = JsonSerializer.Deserialize<LoginModel>(TempData["details"].ToString());
+}
+
+<p>UserName : @ViewBag.user.UserName  Password : @ViewBag.user.Password</p>
+
+<h3>Cookies Name : @ViewBag.name</h3>
+
+<h3>Complex data cookies : @ViewBag.user1.UserName @ViewBag.user1.Password</h3>
+
+<h3>Session Name : @ViewBag.session</h3>
