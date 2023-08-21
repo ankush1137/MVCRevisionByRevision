@@ -1,0 +1,33 @@
+﻿@model States
+
+<h1>State Details</h1>
+
+<div>
+    <div>
+        <label asp-for="Id" class="form-label"></label>
+        <input asp-for="Id" class="form-control" readonly/>
+    </div>
+    <div>
+        <label asp-for="StateName" class="form-label"></label>
+        <input asp-for="StateName" class="form-control" readonly />
+    </div>
+    <div>
+        <a asp-action="Index">Back To Home</a>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        var id = parseInt($('#Id').val());
+        $.ajax({
+            url: 'https://localhost:7272/api/States/' + id,
+            type:'GEt',
+            success:function(response){
+                $('#StateName').val(response.stateName);
+            },
+            error: function(){
+                alert('Api get called fail.........');
+            }
+        });
+    });
+</script>

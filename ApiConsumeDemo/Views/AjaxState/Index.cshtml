@@ -1,0 +1,45 @@
+﻿
+<h1>Lists of States</h1>
+<a asp-action="Create" class="btn btn-success">Create State</a>
+<table id="tbl">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>StateName</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    $(function(){
+        $.ajax({
+            url: 'https://localhost:7272/api/States',
+            type:'GET',
+            success:function(response){
+                $('#tbl').DataTable({
+                    data : response,
+                    columns:[
+                        {title:'Id',data:'id'},
+                        {title:'StateName',data:'stateName'},
+                        {
+                            title:'Actions',data:'id',
+                            render:function(d){
+                                return '<a href="AjaxState/Update/'+d+'">Edit</a> ' +
+                                   '| <a href="AjaxState/Delete/' + d + '">Delete</a>'+
+                                    '| <a href="AjaxState/Details/' + d + '">Details</a>'
+                            }
+                        }
+                    ]                    
+                });
+
+                //alert('Api get called successfully!')
+            },
+            error:function(data){
+                console.log(data);
+                alert('Api get called fail!')
+            }
+        });
+    });
+</script>

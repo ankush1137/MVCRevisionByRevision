@@ -21,7 +21,7 @@ namespace Web.Entities
         [Required]
         [StringLength(100)]
         [Unicode(false)]
-        public string StateName { get; set; }
+        public string? StateName { get; set; }
 
         //[InverseProperty("State")]
         //public virtual ICollection<City> Cities { get; set; }

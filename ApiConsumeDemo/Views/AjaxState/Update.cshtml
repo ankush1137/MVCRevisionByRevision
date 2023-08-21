@@ -1,0 +1,50 @@
+﻿@model States
+<div>
+    <div>
+        <input type="hidden" asp-for="Id" value="@ViewBag.ID" />
+    </div>
+    <div>
+        <label>State Name</label>
+        <input asp-for="StateName"/>
+    </div>
+    <div>
+        <button id="btn" class="btn btn-primary">Save</button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var id = parseInt($('#Id').val());
+        $.ajax({
+            
+            url: 'https://localhost:7272/api/States/' + id,
+            type: 'GET',
+            success: function (response) {                
+                $('#StateName').val(response.stateName); 
+                console.log(response);
+            },
+            error: function (data) {
+                alert('Api get called fail!')
+            }
+        });
+
+        $('#btn').click(function(){
+            var Id = parseInt($('#Id').val());
+            var StateName = $('#StateName').val();
+            var state ={id:Id, stateName:StateName};
+            $.ajax({
+                url: 'https://localhost:7272/api/States/'+Id,
+                type:'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(state),                
+                success:function(){
+                    //alert("State Data Updated successfully");
+                    window.location.href = 'https://localhost:7260/AjaxState';
+                },
+                error : function(){
+                    alert('Update failed');
+                }
+            });
+        });
+    });
+</script>

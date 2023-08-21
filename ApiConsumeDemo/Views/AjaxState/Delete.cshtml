@@ -1,0 +1,48 @@
+﻿@model States
+
+<div class="container">
+    <h1>Delete State</h1>
+    <div>
+        <label asp-for="Id" class="form-label"></label>
+        <input asp-for="Id" class="form-control" readonly/>
+    </div>
+    <div>
+        <label asp-for="StateName" class="form-label"></label>
+        <input asp-for="StateName" class="form-control" readonly/>
+    </div>
+    <div>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        var id = parseInt($('#Id').val());
+        $.ajax({
+
+            url: 'https://localhost:7272/api/States/' + id,
+            type: 'GET',
+            success: function (response) {
+                $('#StateName').val(response.stateName);
+                console.log(response);
+            },
+            error: function (data) {
+                alert('Api get called fail!')
+            }
+        });
+
+        $('button').click(function(){
+            $.ajax({
+                url: 'https://localhost:7272/api/States/' + id,
+                type:'DELETE',
+                success : function(){
+                    //alert('One State deleted successfully.....');
+                    window.location.href = 'https://localhost:7260/AjaxState';
+                },
+                error:function(){
+                    alert('Api get called fail....');
+                }
+            });
+        });
+    })
+</script>
