@@ -1,6 +1,8 @@
 ﻿using ApiConsumeDemo.Models;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using NuGet.Protocol.Plugins;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace ApiConsumeDemo.Controllers
@@ -23,7 +25,10 @@ namespace ApiConsumeDemo.Controllers
         }
 
         public IActionResult Index()
-        {           
+        {
+            var tocken = HttpContext.Session.GetString("Tocken");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tocken);
+
             string result = _client.GetStringAsync(uri + "States").Result;
             var states = JsonSerializer.Deserialize<List<States>>(result);
 

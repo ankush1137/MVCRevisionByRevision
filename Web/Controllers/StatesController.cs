@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StatesController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -22,6 +24,7 @@ namespace Web.Controllers
         }
 
         // GET: api/States
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<State>>> GetStates()
         {
@@ -79,7 +82,6 @@ namespace Web.Controllers
                 }
             }
 
-            return NoContent();
         }
 
         // POST: api/States

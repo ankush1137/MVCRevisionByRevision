@@ -54,7 +54,7 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    employee.PassWord = Emcryption(employee.PassWord);
+                    employee.PassWord = Encryption(employee.PassWord);
 
                     db.Employees.Add(employee);
                     db.SaveChanges();
@@ -69,7 +69,7 @@ namespace Web.Controllers
             return BadRequest();
         }
         [HttpGet]
-        public static string Emcryption(string password)
+        public static string Encryption(string password)
         {
            byte[] bytes= Encoding.ASCII.GetBytes(password);
            string encript = Convert.ToBase64String(bytes);
