@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Web;
 using Web.Entities;
 
 namespace Web.Controllers
 {
-    public class CitiesController : Controller
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class CitiesController : ControllerBase
     {
         private readonly AppDbContext _context;
 
@@ -19,150 +21,113 @@ namespace Web.Controllers
             _context = context;
         }
 
-        // GET: Cities
-        public async Task<IActionResult> Index()
+        // GET: api/Cities
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<City>>> GetCities()
         {
-            var appDbContext = _context.Cities.Include(c => c.State);
-            return View(await appDbContext.ToListAsync());
+          if (_context.Cities == null)
+          {
+              return NotFound();
+          }
+            return await _context.Cities.ToListAsync();
         }
-
-        // GET: Cities/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Cities == null)
-            {
-                return NotFound();
-            }
-
-            var city = await _context.Cities
-                .Include(c => c.State)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (city == null)
-            {
-                return NotFound();
-            }
-
-            return View(city);
-        }
-
-        // GET: Cities/Create
-        public IActionResult Create()
-        {
-            ViewData["StateId"] = new SelectList(_context.States, "Id", "StateName");
-            return View();
-        }
-
-        // POST: Cities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CityName,StateId")] City city)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(city);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["StateId"] = new SelectList(_context.States, "Id", "StateName", city.StateId);
-            return View(city);
-        }
-
-        // GET: Cities/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Cities == null)
-            {
-                return NotFound();
-            }
-
-            var city = await _context.Cities.FindAsync(id);
-            if (city == null)
-            {
-                return NotFound();
-            }
-            ViewData["StateId"] = new SelectList(_context.States, "Id", "StateName", city.StateId);
-            return View(city);
-        }
-
-        // POST: Cities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CityName,StateId")] City city)
-        {
-            if (id != city.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(city);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CityExists(city.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["StateId"] = new SelectList(_context.States, "Id", "StateName", city.StateId);
-            return View(city);
-        }
-
-        // GET: Cities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Cities == null)
-            {
-                return NotFound();
-            }
-
-            var city = await _context.Cities
-                .Include(c => c.State)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (city == null)
-            {
-                return NotFound();
-            }
-
-            return View(city);
-        }
-
-        // POST: Cities/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<City>>> GetCitiesByStateId(int id)
         {
             if (_context.Cities == null)
             {
-                return Problem("Entity set 'AppDbContext.Cities'  is null.");
+                return NotFound();
+            }
+            return await _context.Cities.Where(s => s.StateId == id).ToListAsync();
+        }
+
+        // GET: api/Cities/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<City>> GetCity(int id)
+        {
+          if (_context.Cities == null)
+          {
+              return NotFound();
+          }
+            var city = await _context.Cities.FindAsync(id);
+
+            if (city == null)
+            {
+                return NotFound();
+            }
+
+            return city;
+        }
+
+        // PUT: api/Cities/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCity(int id, City city)
+        {
+            if (id != city.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(city).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CityExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Cities
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<City>> PostCity(City city)
+        {
+          if (_context.Cities == null)
+          {
+              return Problem("Entity set 'AppDbContext.Cities'  is null.");
+          }
+            _context.Cities.Add(city);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCity", new { id = city.Id }, city);
+        }
+
+        // DELETE: api/Cities/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCity(int id)
+        {
+            if (_context.Cities == null)
+            {
+                return NotFound();
             }
             var city = await _context.Cities.FindAsync(id);
-            if (city != null)
+            if (city == null)
             {
-                _context.Cities.Remove(city);
+                return NotFound();
             }
-            
+
+            _context.Cities.Remove(city);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool CityExists(int id)
         {
-          return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

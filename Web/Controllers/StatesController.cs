@@ -13,7 +13,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class StatesController : ControllerBase
     {
         private readonly AppDbContext _context;

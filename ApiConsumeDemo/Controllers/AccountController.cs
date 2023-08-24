@@ -56,5 +56,18 @@ namespace ApiConsumeDemo.Controllers
 
             return View();
         }
+
+
+        public IActionResult SignUp()
+        {
+           var result = _client.GetStringAsync(uri + "states").Result;
+            ViewBag.states = JsonSerializer.Deserialize<List<States>>(result);
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SignUp(Employee employee)
+        {
+            return View();
+        }
     }
 }
